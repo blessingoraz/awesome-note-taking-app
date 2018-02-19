@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import Note from './note';
 
 class Login extends Component {
   state = {
     email: null,
-    password: null
+    password: null,
+    error: null
   };
 
   handleSubmit = (e) => {
@@ -20,6 +22,7 @@ class Login extends Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState(error);
       });
   }
 
@@ -29,6 +32,9 @@ class Login extends Component {
   }
 
   render() {
+    if(!this.state.error) {
+      return <Note id={this.props.id}/>
+    }
     return (
       <form onSubmit={this.handleSubmit} className='app'>
         Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />

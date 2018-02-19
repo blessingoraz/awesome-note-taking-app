@@ -15,7 +15,7 @@ class App extends Component {
   getId = (id) => {
     this.setState({ userId: id })
   }
-
+  
   handleSubmit = (e) => {
     const { username, email, password } = this.state;
     e.preventDefault();
@@ -25,6 +25,7 @@ class App extends Component {
       password
     })
       .then((response) => {
+        console.log('got here =======>')
         this.getId(response.data._id);
       })
       .catch((error) => {
@@ -38,8 +39,9 @@ class App extends Component {
   };
 
   render() {
+    console.log('this.state.userId ========>', this.state.userId)
     if (this.state.userId) {
-      return <Login />
+      return <Login id={this.state.userId}/>
     }
     return (
       <form onSubmit={this.handleSubmit} className='app'>
