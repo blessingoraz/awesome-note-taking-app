@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Login from './components/login';
-import './App.css';
+import Login from './login';
+import Note from './note';
+import '../styles/App.css';
 
 class App extends Component {
   state = {
@@ -15,7 +16,7 @@ class App extends Component {
   getId = (id) => {
     this.setState({ userId: id })
   }
-  
+
   handleSubmit = (e) => {
     const { username, email, password } = this.state;
     e.preventDefault();
@@ -25,7 +26,6 @@ class App extends Component {
       password
     })
       .then((response) => {
-        console.log('got here =======>')
         this.getId(response.data._id);
       })
       .catch((error) => {
@@ -39,18 +39,18 @@ class App extends Component {
   };
 
   render() {
-    console.log('this.state.userId ========>', this.state.userId)
-    if (this.state.userId) {
-      return <Login id={this.state.userId}/>
-    }
-    return (
-      <form onSubmit={this.handleSubmit} className='app'>
-        username: <input type="text" name="username" onChange={(e) => this.handleOnChange(e.target)} />
-        Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
-        Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
-        <input type='submit' value='Sign in' />
-      </form>
-    );
+    // console.log('this.state.userId', this.state.userId);
+    // if (this.state.userId) {
+      return <Note />
+    // }
+    // return (
+    //   <form onSubmit={this.handleSubmit} className='app'>
+    //     username: <input type="text" name="username" onChange={(e) => this.handleOnChange(e.target)} />
+    //     Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
+    //     Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
+    //     <input type='submit' value='Sign in' />
+    //   </form>
+    // );
   }
 }
 
