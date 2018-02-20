@@ -54,6 +54,7 @@ class App extends Component {
     }
     return (
       <div>
+        <h2>Note Taking App</h2>
         <form onSubmit={this.handleSubmit} className='app'>
           username: <input type="text" name="username" onChange={(e) => this.handleOnChange(e.target)} />
           Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
