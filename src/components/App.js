@@ -10,11 +10,12 @@ class App extends Component {
     username: null,
     email: null,
     password: null,
-    userId: null
+    userId: null,
+    showLoginPage: false
   };
 
   getId = (id) => {
-    this.setState({ userId: id })
+    this.setState({ userId: id });
   }
 
   handleSubmit = (e) => {
@@ -38,19 +39,31 @@ class App extends Component {
     this.setState({ [name]: value });
   };
 
+  showLogin = () => {
+    this.setState({
+      showLoginPage: !this.state.showLoginPage
+    })
+  }
+
   render() {
-    // console.log('this.state.userId', this.state.userId);
-    // if (this.state.userId) {
-      return <Note />
-    // }
-    // return (
-    //   <form onSubmit={this.handleSubmit} className='app'>
-    //     username: <input type="text" name="username" onChange={(e) => this.handleOnChange(e.target)} />
-    //     Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
-    //     Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
-    //     <input type='submit' value='Sign in' />
-    //   </form>
-    // );
+    if (this.state.showLoginPage) {
+      return <Login showLogin={this.showLogin} showLoginPage={this.state.showLoginPage} userId={this.state.userId}/>
+    }
+    if (this.state.userId !== null) {
+      return <Note userId={this.state.userId} />
+    }
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit} className='app'>
+          username: <input type="text" name="username" onChange={(e) => this.handleOnChange(e.target)} />
+          Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
+          Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
+          <input type='submit' value='Sign in' />
+        </form>
+
+        <p onClick={this.showLogin}>If you are registered, login here</p>
+      </div>
+    );
   }
 }
 

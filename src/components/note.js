@@ -20,12 +20,12 @@ class Note extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const { note } = this.state;
-        const id = '5a8bdae21bff9c0004972eb4';
-        axios.post(`https://gentle-castle-94319.herokuapp.com/user/${id}/note`, {
+        const { userId } = this.props;
+        axios.post(`https://gentle-castle-94319.herokuapp.com/user/${userId}/note`, {
             note,
         })
             .then((response) => {
-                this.getAllNotes(id);
+                this.getAllNotes(userId);
             })
             .catch((error) => {
                 this.setState(error);
@@ -33,9 +33,12 @@ class Note extends Component {
     }
 
     handleDelete = (id) => {
-        const userId = '5a8bdae21bff9c0004972eb4';
+        const { userId } = this.props;
+        const { allNotes } = this.state;
         axios.delete(`https://gentle-castle-94319.herokuapp.com/user/${userId}/notes/${id}`)
             .then((response) => {
+                allNotes.splice(id, 1);
+                this.setState({allNotes})
             })
             .catch((error) => {
             });
@@ -43,7 +46,7 @@ class Note extends Component {
 
     handleupdate = (id) => {
         const { note } = this.state;
-        const userId = '5a8bdae21bff9c0004972eb4';
+        const { userId } = this.props;
         axios.put(`https://gentle-castle-94319.herokuapp.com/user/${userId}/notes/${id}`, {
             note,
         })
@@ -68,6 +71,7 @@ class Note extends Component {
                         {note.note}
 
                         <input type="button" value="delete" onClick={() => this.handleDelete(note._id)} />
+                        
                         <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
                         <input type="button" value="update" onClick={() => this.handleupdate(note._id)} />
                     </div>

@@ -1,12 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import axios from 'axios';
+import App from './App';
 import Note from './note';
 
 class Login extends Component {
   state = {
     email: null,
     password: null,
-    error: null
+    error: null,
+    message: null
   };
 
   handleSubmit = (e) => {
@@ -17,6 +19,7 @@ class Login extends Component {
       password
     })
       .then((response) => {
+        this.setState({message: response.data.message})
       })
       .catch((error) => {
         this.setState(error);
@@ -29,15 +32,21 @@ class Login extends Component {
   }
 
   render() {
-    // if(!this.state.error) {
-    //   return <Note id={this.props.id}/>
-    // }
+    if (!this.props.showLoginPage) {
+      return <App showLogin={this.showLogin} />
+    }
+    if(!this.state.error && this.state.message) {
+      return <Note userId={this.props.userId}/>
+    }
     return (
-      <form onSubmit={this.handleSubmit} className='app'>
-        Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
-        Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
-        <input type='submit' value='Sign in' />
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit} className='app'>
+          Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
+          Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
+          <input type='submit' value='Sign in' />
+        </form>
+        <p onClick={this.props.showLogin}>If you are not registered, sign up here</p>
+      </div>
     );
   }
 }
