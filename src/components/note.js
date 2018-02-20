@@ -10,7 +10,7 @@ class Note extends Component {
     getAllNotes(id) {
         axios.get(`https://gentle-castle-94319.herokuapp.com/user/${id}/notes`)
             .then((response) => {
-                this.setState({ allNotes: response.data })
+                this.setState({ allNotes: response.data, note: '' })
             })
             .catch((error) => {
                 this.setState(error);
@@ -71,7 +71,7 @@ class Note extends Component {
                         {note.note}
 
                         <input type="button" value="delete" onClick={() => this.handleDelete(note._id)} />
-                        
+
                         <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
                         <input type="button" value="update" onClick={() => this.handleupdate(note._id)} />
                     </div>

@@ -39,13 +39,29 @@ class Login extends Component {
       return <Note userId={this.props.userId}/>
     }
     return (
-      <div>
-        <form onSubmit={this.handleSubmit} className='app'>
-          Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
-          Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
-          <input type='submit' value='Sign in' />
+      <div className="App-container">
+        <h2 className="App-title">Simple Note App</h2>
+        <form onSubmit={this.handleSubmit} className='App-form'>
+          <div className="App-input">
+            <input
+              type="text"
+              name="email"
+              placeholder="EMAIL"
+              onChange={(e) => this.handleOnChange(e.target)} />
+          </div>
+          <div className="App-input">
+            <input
+              type="password"
+              name="password"
+              placeholder="PASSWORD"
+              onChange={(e) => this.handleOnChange(e.target)} />
+          </div>
+
+          <div className="App-input">
+            <input type='submit' value='Login' style={{backgroundColor:'#E4A07A', color: '#fff'}} />
+          </div>
         </form>
-        <p onClick={this.props.showLogin}>If you are not registered, sign up here</p>
+        <p onClick={this.props.showLogin} style={{fontSize: '12px', color: '#3C211C'}}>If you are not registered, sign up here</p>
       </div>
     );
   }

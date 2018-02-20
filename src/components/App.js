@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Login from './login';
 import Note from './note';
+
 import '../styles/App.css';
 
 class App extends Component {
@@ -47,22 +48,45 @@ class App extends Component {
 
   render() {
     if (this.state.showLoginPage) {
-      return <Login showLogin={this.showLogin} showLoginPage={this.state.showLoginPage} userId={this.state.userId}/>
+      return <Login showLogin={this.showLogin} showLoginPage={this.state.showLoginPage} userId={this.state.userId} />
     }
     if (this.state.userId !== null) {
       return <Note userId={this.state.userId} />
     }
     return (
-      <div>
-        <h2>Note Taking App</h2>
-        <form onSubmit={this.handleSubmit} className='app'>
-          username: <input type="text" name="username" onChange={(e) => this.handleOnChange(e.target)} />
-          Email: <input type="text" name="email" onChange={(e) => this.handleOnChange(e.target)} />
-          Password: <input type="password" name="password" onChange={(e) => this.handleOnChange(e.target)} />
-          <input type='submit' value='Sign in' />
+      <div className="App-container">
+        <h2 className="App-title">Simple Note App</h2>
+        <form onSubmit={this.handleSubmit} className='App-form' >
+          <div className="App-input">
+            <input
+              type="text"
+              name="username"
+              placeholder="USERNAME"
+              onChange={(e) => this.handleOnChange(e.target)} />
+          </div>
+
+          <div className="App-input">
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              onChange={(e) => this.handleOnChange(e.target)} />
+          </div>
+
+          <div className="App-input">
+            <input
+              type="password"
+              name="password"
+              placeholder="PASSWORD"
+              onChange={(e) => this.handleOnChange(e.target)} />
+          </div>
+
+          <div className="App-input">
+            <input type='submit' value='Create Account' style={{backgroundColor:'#E4A07A', color: '#fff'}}/>
+          </div>
         </form>
 
-        <p onClick={this.showLogin}>If you are registered, login here</p>
+        <p onClick={this.showLogin} style={{fontSize: '12px', color: '#3C211C'}}>If you are registered, login here</p>
       </div>
     );
   }
