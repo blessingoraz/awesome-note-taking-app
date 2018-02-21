@@ -4,17 +4,23 @@ import Alert from './alert';
 
 class Note extends Component {
   state = {
-    note: null,
+    note: {},
     allNotes: null,
-    showContainer: null,
+    showContainer: {},
     showAlert: false,
     errorMessage: null
   };
 
+  componentDidMount() {
+    if (this.props.userId) {
+      this.getAllNotes(this.props.userId);
+    }
+  }
+
   getAllNotes(id) {
     axios.get(`https://gentle-castle-94319.herokuapp.com/user/${id}/notes`)
       .then((response) => {
-        this.setState({ allNotes: response.data, note: '' })
+        this.setState({ allNotes: response.data })
       })
       .catch((error) => {
         this.setState(error);
@@ -25,7 +31,7 @@ class Note extends Component {
     e.preventDefault();
     const { note } = this.state;
     const { userId } = this.props;
-    if(!note) {
+    if (!note) {
       this.setState({ errorMessage: "Unable to create a note", showAlert: true });
       return;
     }
@@ -37,7 +43,7 @@ class Note extends Component {
         this.getAllNotes(userId);
       })
       .catch((error) => {
-        this.setState({errorMessage: "Unable to create a note", showAlert: true});
+        this.setState({ errorMessage: "Unable to create a note", showAlert: true });
       });
   }
 
@@ -53,14 +59,16 @@ class Note extends Component {
       });
   }
 
-  handleupdate = (id) => {
+  handleupdate = (e, id, index) => {
+    e.preventDefault();
     const { note } = this.state;
     const { userId } = this.props;
     axios.put(`https://gentle-castle-94319.herokuapp.com/user/${userId}/notes/${id}`, {
-      note,
+      note: note[index],
     })
       .then((response) => {
-        this.handleShowUpdateInput();
+        this.getAllNotes(userId);
+        this.toggleShowUpdateInput(index);
       })
       .catch((error) => {
         this.setState(error);
@@ -71,26 +79,40 @@ class Note extends Component {
     const { name, value } = target;
     this.setState({ [name]: value });
   }
-
-  handleShowUpdateInput = () => {
-    this.setState({ showContainer: !this.state.showContainer });
-
+  handleNoteUpdate = (target, index) => {
+    const { value } = target;
+    this.setState({
+      note: {
+        ...this.state.note,
+        [index]: value
+      }
+    })
   }
-  showUpdateContainer = (note) => {
-    if (!this.state.showContainer) {
+
+  toggleShowUpdateInput = (index) => {
+      this.setState({ showContainer: {
+        ...this.state.showContainer,
+        [index]: !this.state.showContainer[index]
+      }
+    });
+  }
+  showUpdateContainer = (note, index) => {
+    if (this.state.showContainer[index]) {
       return (
         <div>
-          <input
-            type="button"
-            value="click to update"
-            onClick={this.handleShowUpdateInput} />
+          <form onSubmit={(e) => this.handleupdate(e, note._id, index)}>
+            <input type="text" value={this.state.note[index]} name="note" onChange={(e) => this.handleNoteUpdate(e.target, index)} />
+            <input type="submit" value="update" />
+          </form>
         </div>
       )
     }
     return (
       <div>
-        <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
-        <input type="button" value="update" onClick={() => this.handleupdate(note._id)} />
+        <input
+          type="button"
+          value="click to update"
+          onClick={() => this.toggleShowUpdateInput(index)} />
       </div>
     )
   }
@@ -109,10 +131,10 @@ class Note extends Component {
               </tr>
             </thead>
             <tbody>
-              {notes.map((note, id) => {
+              {notes.map((note, index) => {
                 return (
                   <tr
-                    key={id}>
+                    key={index}>
                     <td>
                       <div>
                         <p>{note.note}</p>
@@ -124,7 +146,7 @@ class Note extends Component {
                       </div>
                     </td>
                     <td>
-                      {this.showUpdateContainer(note)}
+                      {this.showUpdateContainer(note, index)}
                     </td>
                   </tr>
                 )
@@ -142,7 +164,7 @@ class Note extends Component {
       <div className="Note-container">
         <h2 className="App-title">Simple Note App</h2>
 
-        {this.state.showAlert && <Alert message={this.state.errorMessage} handleCancelAlert={this.props.handleCancelAlert}/>}
+        {this.state.showAlert && <Alert message={this.state.errorMessage} handleCancelAlert={this.props.handleCancelAlert} />}
 
         <div className="Note-input-container">
           <form onSubmit={this.handleSubmit}>

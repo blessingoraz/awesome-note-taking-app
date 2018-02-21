@@ -9,7 +9,7 @@ class Login extends Component {
     email: null,
     password: null,
     errorMessage: null,
-    message: null,
+    userData: null,
     showAlert: false
   };
 
@@ -21,7 +21,7 @@ class Login extends Component {
       password
     })
       .then((response) => {
-        this.setState({message: response.data.message})
+        this.setState({userData: response.data})
       })
       .catch((error) => {
         this.setState({ errorMessage: 'Incorrect Login details', showAlert: true});
@@ -37,8 +37,8 @@ class Login extends Component {
     if (!this.props.showLoginPage) {
       return <App showLogin={this.showLogin} />
     }
-    if(!this.state.errorMessage && this.state.message) {
-      return <Note userId={this.props.userId}/>
+    if(!this.state.errorMessage && this.state.userData) {
+      return <Note userId={this.state.userData._id}/>
     }
     return (
       <div className="App-container">
