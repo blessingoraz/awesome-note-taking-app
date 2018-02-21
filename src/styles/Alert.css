@@ -1,0 +1,26 @@
+.Alert-container {
+    padding: 15px;
+    background-color: #f3c26f;
+    color: white;
+    margin-bottom: 15px;
+    width: 350px;
+    height: 20px;
+    border-radius: 5px;
+  }
+
+  /* The close button */
+  .Alert-closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .Alert-message {
+      margin: 0;
+      font-size: 1em;
+  }

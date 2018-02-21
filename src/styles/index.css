@@ -1,3 +1,7 @@
+@import './App.css';
+@import './Note.css';
+@import './Alert.css';
+
 body {
   margin: 0;
   padding: 0;

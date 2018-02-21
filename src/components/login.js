@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import App from './App';
 import Note from './note';
+import Alert from './alert';
 
 class Login extends Component {
   state = {
     email: null,
     password: null,
-    error: null,
-    message: null
+    errorMessage: null,
+    message: null,
+    showAlert: false
   };
 
   handleSubmit = (e) => {
@@ -22,7 +24,7 @@ class Login extends Component {
         this.setState({message: response.data.message})
       })
       .catch((error) => {
-        this.setState(error);
+        this.setState({ errorMessage: 'Incorrect Login details', showAlert: true});
       });
   }
 
@@ -35,12 +37,13 @@ class Login extends Component {
     if (!this.props.showLoginPage) {
       return <App showLogin={this.showLogin} />
     }
-    if(!this.state.error && this.state.message) {
+    if(!this.state.errorMessage && this.state.message) {
       return <Note userId={this.props.userId}/>
     }
     return (
       <div className="App-container">
         <h2 className="App-title">Simple Note App</h2>
+        {this.state.showAlert && <Alert message={this.state.errorMessage} handleCancelAlert={this.props.handleCancelAlert}/>}
         <form onSubmit={this.handleSubmit} className='App-form'>
           <div className="App-input">
             <input

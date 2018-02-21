@@ -3,8 +3,7 @@ import axios from 'axios';
 
 import Login from './login';
 import Note from './note';
-
-import '../styles/App.css';
+import Alert from './alert';
 
 class App extends Component {
   state = {
@@ -12,7 +11,9 @@ class App extends Component {
     email: null,
     password: null,
     userId: null,
-    showLoginPage: false
+    showLoginPage: false,
+    errorMessage: null,
+    showAlert: false
   };
 
   getId = (id) => {
@@ -31,7 +32,7 @@ class App extends Component {
         this.getId(response.data._id);
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({errorMessage: "Unable to Sign up", showAlert: true})
       });
   }
 
@@ -46,9 +47,16 @@ class App extends Component {
     })
   }
 
+  handleCancelAlert = () => {
+    this.setState({showAlert: !this.state.showAlert})
+  }
   render() {
     if (this.state.showLoginPage) {
-      return <Login showLogin={this.showLogin} showLoginPage={this.state.showLoginPage} userId={this.state.userId} />
+      return<Login
+        showLogin={this.showLogin}
+        showLoginPage={this.state.showLoginPage}
+        userId={this.state.userId}
+        handleCancelAlert={this.handleCancelAlert} />
     }
     if (this.state.userId !== null) {
       return <Note userId={this.state.userId} />
@@ -56,6 +64,7 @@ class App extends Component {
     return (
       <div className="App-container">
         <h2 className="App-title">Simple Note App</h2>
+        {this.state.showAlert && <Alert message={this.state.errorMessage} handleCancelAlert={this.handleCancelAlert}/>}
         <form onSubmit={this.handleSubmit} className='App-form' >
           <div className="App-input">
             <input
