@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import '../styles/Note.css';
 
 class Note extends Component {
     state = {
         note: null,
-        allNotes: null
+        allNotes: null,
+        showContainer: null
     };
 
     getAllNotes(id) {
@@ -38,7 +40,7 @@ class Note extends Component {
         axios.delete(`https://gentle-castle-94319.herokuapp.com/user/${userId}/notes/${id}`)
             .then((response) => {
                 allNotes.splice(id, 1);
-                this.setState({allNotes})
+                this.setState({ allNotes })
             })
             .catch((error) => {
             });
@@ -51,6 +53,7 @@ class Note extends Component {
             note,
         })
             .then((response) => {
+                this.handleShowUpdateInput();
             })
             .catch((error) => {
                 this.setState(error);
@@ -62,34 +65,105 @@ class Note extends Component {
         this.setState({ [name]: value });
     }
 
+    handleShowUpdateInput = () => {
+        this.setState({ showContainer: !this.state.showContainer });
+
+    }
+    showUpdateContainer = (note) => {
+        if (!this.state.showContainer) {
+            return (
+                <div>
+                    <input
+                        type="button"
+                        value="click to update"
+                        onClick={this.handleShowUpdateInput} />
+                </div>
+            )
+        }
+        return (
+            <div>
+                <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
+                <input type="button" value="update" onClick={() => this.handleupdate(note._id)} />
+            </div>
+        )
+    }
+
     showNotes = () => {
         const notes = this.state.allNotes;
         if (notes !== null) {
-            return notes.map((note, id) => {
-                return (
-                    <div key={id}>
-                        {note.note}
+            return (
+                <div className="tableContainer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th className="tableHeader">NOTES</th>
+                                <th className="tableHeader" >DELETE</th>
+                                <th className="tableHeader">UPDATE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {notes.map((note, id) => {
+                                return (
+                                    <tr
+                                        key={id}>
+                                        <td>
+                                            <div>
+                                                <p>{note.note}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <input type="button" value="delete" onClick={() => this.handleDelete(note._id)} />
+                                            </div>
+                                        </td>
+                                        <td>
 
-                        <input type="button" value="delete" onClick={() => this.handleDelete(note._id)} />
+                                            {this.showUpdateContainer(note)}
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            )
+            // return notes.map((note, id) => {
+            //     return (
+            //         <div key={id}>
+            //             {note.note}
 
-                        <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
-                        <input type="button" value="update" onClick={() => this.handleupdate(note._id)} />
-                    </div>
-                )
-            })
+            //             <input type="button" value="delete" onClick={() => this.handleDelete(note._id)} />
+
+            //             <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
+            //             <input type="button" value="update" onClick={() => this.handleupdate(note._id)} />
+            //         </div>
+            //     )
+            // })
         }
         return null;
     }
 
     render() {
         return (
-            <div>
-                <h2>Notes here </h2>
-                <form onSubmit={this.handleSubmit}>
-                    Notes: <input type="text" name="note" onChange={(e) => this.handleOnChange(e.target)} />
-                    <input type="submit" value="create" />
-                </form>
+            <div className="Note-container">
+                <h2 className="App-title">Simple Note App</h2>
+                <div className="Note-input-container">
+                    <form onSubmit={this.handleSubmit}>
+                        <input
+                            type="text"
+                            name="note"
+                            placeholder="Create notes here"
+                            className="Note-input"
+                            onChange={(e) => this.handleOnChange(e.target)} />
+                        <input
+                            type="submit"
+                            value="create"
+                            className="Note-button" />
+                    </form>
+                </div>
+
                 {this.showNotes()}
+
             </div>
         )
     }

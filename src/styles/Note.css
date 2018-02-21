@@ -1,0 +1,30 @@
+.Note-container {
+    margin: 70px;
+    background-color: #E68272;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Note-input {
+    width: 250px;
+    height: 35px;
+    border-radius: 3px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    color: #AAAAAA;
+}
+
+.Note-button {
+    width: 100px;
+    border-radius: 3px;
+    height: 35px;
+    border: none;
+    margin-left: 30px;
+    background-color: #F7AD85;
+    color: white
+
+}
