@@ -23,12 +23,13 @@ class App extends Component {
   handleSubmit = (e) => {
     const { username, email, password } = this.state;
     e.preventDefault();
-    axios.post('https://gentle-castle-94319.herokuapp.com/user', {
+    axios.post('https://simple-note-app-api.herokuapp.com/api/user', {
       username,
       email,
       password
     })
       .then((response) => {
+        localStorage.setItem('token', response.data.token);
         this.getId(response.data._id);
       })
       .catch((error) => {
@@ -51,6 +52,7 @@ class App extends Component {
     this.setState({showAlert: !this.state.showAlert})
   }
   render() {
+    const token = localStorage.getItem('token');
     if (this.state.showLoginPage) {
       return<Login
         showLogin={this.showLogin}
@@ -76,7 +78,7 @@ class App extends Component {
 
           <div className="App-input">
             <input
-              type="text"
+              type="email"
               name="email"
               placeholder="Email"
               onChange={(e) => this.handleOnChange(e.target)} />

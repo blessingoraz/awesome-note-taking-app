@@ -18,7 +18,12 @@ class Note extends Component {
   }
 
   getAllNotes(id) {
-    axios.get(`https://gentle-castle-94319.herokuapp.com/user/${id}/notes`)
+    const token = localStorage.getItem('token');
+    axios.get(`https://simple-note-app-api.herokuapp.com/api/user/${id}/notes`, {
+      headers: {
+        'x-access-token': token
+      }
+    })
       .then((response) => {
         this.setState({ allNotes: response.data })
       })
@@ -35,9 +40,14 @@ class Note extends Component {
       this.setState({ errorMessage: "Unable to create a note", showAlert: true });
       return;
     }
-    axios.post(`https://gentle-castle-94319.herokuapp.com/user/${userId}/note`, {
-      note,
-    })
+    const token = localStorage.getItem('token');
+    axios.post(`https://simple-note-app-api.herokuapp.com/api/user/${userId}/note`, {
+      note
+    }, {
+        headers: {
+          'x-access-token': token
+        }
+      })
       .then((response) => {
         this.setState({ showAlert: false });
         this.getAllNotes(userId);
@@ -50,7 +60,13 @@ class Note extends Component {
   handleDelete = (id) => {
     const { userId } = this.props;
     const { allNotes } = this.state;
-    axios.delete(`https://gentle-castle-94319.herokuapp.com/user/${userId}/notes/${id}`)
+    const token = localStorage.getItem('token');
+    axios.delete(`https://simple-note-app-api.herokuapp.com/api/user/${userId}/notes/${id}`,
+      {
+        headers: {
+          'x-access-token': token
+        }
+      })
       .then((response) => {
         allNotes.splice(id, 1);
         this.setState({ allNotes })
@@ -63,9 +79,14 @@ class Note extends Component {
     e.preventDefault();
     const { note } = this.state;
     const { userId } = this.props;
-    axios.put(`https://gentle-castle-94319.herokuapp.com/user/${userId}/notes/${id}`, {
+    const token = localStorage.getItem('token');
+    axios.put(`https://simple-note-app-api.herokuapp.com/api/user/${userId}/notes/${id}`, {
       note: note[index],
-    })
+    }, {
+        headers: {
+          'x-access-token': token
+        }
+      })
       .then((response) => {
         this.getAllNotes(userId);
         this.toggleShowUpdateInput(index);

@@ -16,11 +16,12 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-    axios.post('https://gentle-castle-94319.herokuapp.com/login', {
+    axios.post('https://simple-note-app-api.herokuapp.com/api/login', {
       email,
       password
     })
       .then((response) => {
+        localStorage.setItem('token', response.data.token);
         this.setState({userData: response.data})
       })
       .catch((error) => {
