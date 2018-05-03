@@ -22,7 +22,7 @@ class Login extends Component {
     })
       .then((response) => {
         localStorage.setItem('token', response.data.token);
-        this.setState({userData: response.data})
+        this.setState({userData: response.data, errorMessage: null})
       })
       .catch((error) => {
         this.setState({ errorMessage: 'Incorrect Login details', showAlert: true});

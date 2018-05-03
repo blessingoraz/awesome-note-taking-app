@@ -52,7 +52,6 @@ class App extends Component {
     this.setState({showAlert: !this.state.showAlert})
   }
   render() {
-    const token = localStorage.getItem('token');
     if (this.state.showLoginPage) {
       return<Login
         showLogin={this.showLogin}
